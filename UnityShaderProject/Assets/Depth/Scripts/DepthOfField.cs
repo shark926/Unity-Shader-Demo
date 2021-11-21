@@ -10,10 +10,6 @@ public class DepthOfField : MonoBehaviour {
 	void Start () {
         Camera.main.depthTextureMode = DepthTextureMode.Depth;
 	}
-	
-	void Update () {
-		
-	}
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
@@ -23,6 +19,7 @@ public class DepthOfField : MonoBehaviour {
             Graphics.Blit(source, blurTex, blurMat);
             dofMat.SetTexture("_BlurTex", blurTex);
             Graphics.Blit(source, destination, dofMat);
+            RenderTexture.ReleaseTemporary(blurTex);
         }
         else
         {
