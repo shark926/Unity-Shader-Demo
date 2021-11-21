@@ -55,13 +55,14 @@ Shader "Kaima/Depth/MotionBlur"
 				fixed4 col = tex2D(_MainTex, i.uv.xy);
 
 				float depth = UNITY_SAMPLE_DEPTH(tex2D(_CameraDepthTexture, i.uv.zw));
-				float4 H = float4(i.uv.x * 2 - 1, i.uv.y * 2 - 1, depth * 2 - 1, 1); //NDC坐标
+				float4 H = float4(i.uv.x * 2 - 1, i.uv.y * 2 - 1, depth * 2 - 1, 1); //NDC空间坐标
 				float4 D = mul(_CurrentInverseVP, H);
 				float4 W = D / D.w; //将齐次坐标w分量变1得到世界坐标
 
 				float4 currentPos = H;
+
 				float4 lastPos = mul(_LastVP, W);
-				lastPos /= lastPos.w;
+				lastPos /= lastPos.w;//转到NDC空间
 				
 				//采样两点所在直线上的点，进行模糊
 				float2 velocity = (currentPos - lastPos) / 2.0;
