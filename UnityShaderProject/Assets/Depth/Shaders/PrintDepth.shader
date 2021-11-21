@@ -34,12 +34,13 @@
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				#if UNITY_UV_STARTS_AT_TOP //处于DX
-					if(_MainTex_TexelSize.y < 0)
-						o.uv = float2(v.uv.x, 1-v.uv.y);
-				#else
-					o.uv = v.uv;
+				o.uv = v.uv;
+
+				#if UNITY_UV_STARTS_AT_TOP //处于DX,渲染到纹理,开启抗锯齿
+				if (_MainTex_TexelSize.y < 0)
+					o.uv.y = 1 - v.uv.y;
 				#endif
+
 				return o;
 			}
 			
